@@ -1,0 +1,18 @@
+<nav class="navUser">
+	<div class="container">
+		{{> components/common/currency-selector}}
+		<div class="top-header-contact">
+			<a href="mailto: info@wisconsinmade.com"><i style="margin-left:10px;" class="fa fa-envelope" ></i></i> info@wisconsinmade.com</a>
+		</div>
+		<ul class="navUser-section navUser-section--alt">
+			
+			{{#if theme_settings.social_icon_placement_top}}
+				<li class="navUser-item navUser-item--social">
+					{{> components/common/social-links}}
+				</li>
+			 
+			{{/if}}
+
+		</ul>
+	 </div>
+</nav>

@@ -1,0 +1,129 @@
+		<script type="text/javascript" >
+
+		var $animation_elements = $('.animation-element');
+		var $window = $(window);
+		var refresherIndex;
+		
+		function check_if_in_view() {
+		  var window_height = $window.height();
+		  var window_top_position = $window.scrollTop();
+		  var window_bottom_position = (window_top_position + window_height);
+	
+		  $.each($animation_elements, function() {
+			var $element = $(this);
+			var element_height = $element.outerHeight();
+			var element_top_position = $element.offset().top;
+			var element_bottom_position = (element_top_position + element_height);
+		 
+			//check to see if this current container is within viewport
+			if ((element_bottom_position >= window_top_position) &&
+				((element_top_position+60) <= window_bottom_position)) {
+				$element.addClass('in-view');
+				$element.addClass('_refresher'); 
+				var refresherIndex = setInterval(function(){ _view_refresher($element); }, 300000);
+
+			} else {
+				$element.removeClass('in-view');
+				$element.removeClass('_refresher'); 
+				
+				clearInterval(refresherIndex);
+			}
+		  });
+		}
+	
+		function _view_refresher($element){
+			if($element.hasClass( "_refresher" )){
+				$element.removeClass('in-view');
+				$refresher = setTimeout(function() {
+					$element.addClass('in-view');
+				}, 250);
+				
+			}	
+		}
+
+		$window.on('scroll resize', 
+			function(){
+				if($window.width() > 800){
+					check_if_in_view();
+				}
+			}
+		);
+		$window.trigger('scroll');
+		</script>
+
+
+		<!-- StickyNav-->
+		<script> 
+
+			var _navbarID = 'sticky-navbar';
+			var contentBody = jQuery('div.body');
+			var navbar = jQuery('#'+_navbarID);
+			
+			// get offset in js
+			var _offset = document.getElementById(_navbarID);
+			var sticky = (navbar) ?  _offset.offsetTop : '';
+			
+			// init StickyNav onScroll 
+			window.onscroll = function() { (navbar) ? stickyNav() : ''; };
+						
+			// StickyNav onScroll
+			function stickyNav() {
+			  if (document.body.scrollTop > sticky || document.documentElement.scrollTop > sticky ) {
+				navbar.addClass("sticky");
+				contentBody.css('padding-top', navbar.height());
+			  } else {
+				navbar.removeClass("sticky");
+				contentBody.css('padding-top','');
+			  }
+			}
+			
+			// -- Start (fix overflow issue on long subMenu List) -- 
+			var _hasSubMenuCLASS = 'has-subMenu';
+			var _subMenuContainerCLASS = 'navPage-subMenu';
+			var _mediaMinWidth = 801;
+			
+			// is-open Observer
+			function isopenChecker(_el){
+				_isopen = setInterval(function(){
+					if(!_el.hasClass('is-open')){
+						navbar.removeClass('unsticky');
+						// end is-open Observer
+						clearInterval(_isopen);
+					}
+				} , 50);
+			}
+			
+			// has-subMenu Extender 
+			jQuery('.'+_hasSubMenuCLASS).click(function(){
+				if(jQuery( window ).width()  >= _mediaMinWidth){
+					if(jQuery(this).parent().find('.'+_subMenuContainerCLASS).height() > jQuery(window).height()){
+						navbar.addClass('unsticky');
+						// start is-open Observer
+						isopenChecker(jQuery(this));
+					}else{
+						// failsafe (optional)
+					    navbar.removeClass('unsticky');
+					}
+				}
+			});			
+			
+			// -- End (fix overflow issue on long subMenu List) -- 
+			
+		</script> 
+		
+		<script>
+		/** Navigation Fix **/
+		jQuery(document).ready(function(){
+			function _navMenuRelocator(){
+				if(jQuery( window ).width()  <= 1000){
+					jQuery('#menu').appendTo('#sticky-navbar');
+				}else{
+					jQuery('#menu').appendTo('.non-logo-section');
+				}
+			}
+			jQuery( window ).resize(function() {
+				_navMenuRelocator();
+			});
+			_navMenuRelocator();
+		});
+		</script>

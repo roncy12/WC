@@ -1,0 +1,53 @@
+<div class="container">
+	<div class="newsletter-headings">
+		<img src="https://cdn11.bigcommerce.com/s-mh7fmcvlrc/content/footer/newsletter-env.png" />
+		
+		<div >
+			<h3>{{lang 'newsletter.subscribe'}}</h3>
+			<p>Sent Mondays, Thursdays, and Saturday mornings</p>
+		</div>
+		
+	</div>
+
+	<form class="form" action="{{urls.subscribe.action}}" method="post">
+		<fieldset class="form-fieldset">
+			<input type="hidden" name="action" value="subscribe">
+			<input type="hidden" name="nl_first_name" value="bc">
+			<input type="hidden" name="check" value="1">
+			<div class="form-field">
+				<label class="form-label is-srOnly" for="nl_email">{{lang 'common.email_address'}}</label>
+				<div class="form-prefixPostfix wrap">
+					<input class="form-input newsletter-inp"
+						   id="nl_email"
+						   name="nl_email"
+						   type="email"
+						   value="{{customer.email}}"
+						   placeholder="{{lang 'newsletter.email_placeholder'}}"
+						   aria-describedby="alertBox-message-text"
+						   aria-required="true"
+					>
+					<input class="button button--primary form-prefixPostfix-button--postfix newsletter-btn"
+						   type="submit"
+						   value="{{lang 'newsletter.subscribe_submit'}}"
+					>
+				</div>
+				{{#if settings.show_newsletter_summary }}
+					<div class="footer-newsletter-summary">{{settings.newsletter_summary}}</div>
+				{{/if}}
+			</div>
+		</fieldset>
+	</form>
+</div>
+	<script>
+		function _initPlaceHolder(){
+			if(jQuery(window).width() <= 560){
+				jQuery('#nl_email').attr('placeholder',"Subscribe to our Newsletter");
+			}else{
+				jQuery('#nl_email').attr('placeholder',"{{lang 'newsletter.email_placeholder'}}");
+			}
+		}
+		_initPlaceHolder();
+		jQuery( window ).resize(function() {
+			_initPlaceHolder();
+		});
+	</script>
